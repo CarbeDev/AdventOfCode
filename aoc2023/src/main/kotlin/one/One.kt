@@ -1,6 +1,21 @@
 package one
 
+val conversionList = listOf(
+    "one" to "1",
+    "two" to "2",
+    "three" to "3",
+    "four" to "4",
+    "five" to "5",
+    "six" to "6",
+    "seven" to "7",
+    "eight" to "8",
+    "nine" to "9"
+)
+
 fun main() {
+
+
+
     val input = """
   8eight1
   98126
@@ -1012,16 +1027,36 @@ fun String.parseLineJump(): List<String> {
     return this.split(System.lineSeparator())
 }
 
-fun String.combineDigit() : String {
+fun String.combineDigit(): String {
     try {
         val filteredString = this.getNumber()
-        return ""+filteredString.first() + filteredString.last()
-    } catch (e : Exception){
+        return "" + filteredString.first() + filteredString.last()
+    } catch (e: Exception) {
         return "0"
     }
 
 }
 
-fun String.getNumber() : String {
-    return this.filter { it.isDigit() }
+fun String.getNumber(): String {
+    return this.convertStringToNumber().filter { it.isDigit() }
+}
+
+fun String.convertStringToNumber(): String {
+
+    var  toto = this
+    while (conversionList.map { it.first }.any { toto.contains(it) }){
+        val firstOccurence = toto.findFirstOccurence().filter { it.third != -1 }.minBy { it.third }
+        toto = toto.replace(firstOccurence.first,firstOccurence.second)
+    }
+
+    return toto
+}
+
+fun String.findFirstOccurence() : List<Triple<String,String,Int>>{
+    val r = mutableListOf<Triple<String,String,Int>>()
+    for (pair in conversionList){
+        r.add(Triple(pair.first,pair.second, this.indexOf(pair.first)))
+    }
+
+    return r
 }
