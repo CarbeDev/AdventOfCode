@@ -14,8 +14,8 @@ fun main() {
 fun String.getPower(): Int {
     val diceResults = this.splitIntoSets().map { set ->
         val maxDiceResult = MaxDiceResult()
-        set.split(",").forEach { type ->
-            when (Cubes.values().first { type.contains(it.label)}){
+        set.splitResult().forEach { type ->
+            when (Cubes.entries.first { type.contains(it.label) }) {
                 Cubes.RED -> maxDiceResult.red = type.filter { it.isDigit() }.toInt()
                 Cubes.GREEN -> maxDiceResult.green = type.filter { it.isDigit() }.toInt()
                 Cubes.BLUE -> maxDiceResult.blue = type.filter { it.isDigit() }.toInt()
@@ -27,23 +27,8 @@ fun String.getPower(): Int {
     return diceResults.getPower()
 }
 
-class MaxDiceResult(
-){
-    var red : Int? = null
-        set(value){
-            if (field == null || value!! > field!!) field = value
-        }
+class MaxDiceResult(var red: Int = 0, var green: Int = 0, var blue: Int = 0)
 
-    var green : Int? = null
-        set(value){
-            if (field == null || value!! > field!!) field = value
-        }
-
-    var blue : Int? = null
-        set(value){
-            if (field == null || value!! > field!!) field = value
-        }
-}
 fun List<MaxDiceResult>.getPower(): Int {
-    return (this.maxBy { it.red ?: 0 }.red ?: 0) * (this.maxBy { it.green ?: 0 }.green ?: 0) * (this.maxBy { it.blue ?: 0 }.blue ?: 0)
+    return this.maxOf { it.red } * this.maxOf { it.green } * this.maxOf { it.blue }
 }

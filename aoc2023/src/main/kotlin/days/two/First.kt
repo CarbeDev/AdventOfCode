@@ -18,10 +18,13 @@ fun String.splitIntoSets(): List<String> {
 }
 
 fun String.isSetValid(): Boolean {
-    val split = this.split(",")
-    return split.map { type ->
-        type.filter { it.isDigit() }.toInt() <= Cubes.values().first { type.contains(it.label) }.number
+    return this.splitResult().map { type ->
+        type.filter { it.isDigit() }.toInt() <= Cubes.entries.first { type.contains(it.label) }.number
     }.all { it }
+}
+
+fun String.splitResult(): List<String> {
+    return this.split(",")
 }
 
 enum class Cubes(val label: String, val number: Int) {
