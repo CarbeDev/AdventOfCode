@@ -1,4 +1,4 @@
-package one
+package days
 
 import java.io.File
 
@@ -17,7 +17,7 @@ val conversionList = listOf(
 fun main() {
     var result = 0
 
-    File("src/main/resources/2023/day1.txt").forEachLine { result += it.combineDigit() }
+    File("src/main/resources/day1.txt").forEachLine { result += it.combineDigit() }
     println(result)
 }
 
