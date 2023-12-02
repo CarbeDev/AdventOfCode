@@ -22,10 +22,10 @@ fun main() {
 }
 
 fun String.combineDigit(): Int {
-    try {
-        return (findFirstOccurence() + findLastOccurence()).toInt()
+    return try {
+        (findFirstOccurence() + findLastOccurence()).toInt()
     } catch (e: Exception) {
-        return 0
+        0
     }
 }
 
