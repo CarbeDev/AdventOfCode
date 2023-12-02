@@ -14,7 +14,13 @@ val conversionList = listOf(
 
 fun main() {
 
-
+   /* val input = """two1nine
+eightwothree
+abcone2threexyz
+xtwone3four
+4nineeightseven2
+zoneight234
+7pqrstsixteen"""*/
 
     val input = """
   8eight1
@@ -1029,34 +1035,33 @@ fun String.parseLineJump(): List<String> {
 
 fun String.combineDigit(): String {
     try {
-        val filteredString = this.getNumber()
-        return "" + filteredString.first() + filteredString.last()
+        return findFirstOccurence() + findLastOccurence()
     } catch (e: Exception) {
+        println(this)
         return "0"
     }
 
 }
 
-fun String.getNumber(): String {
-    return this.convertStringToNumber().filter { it.isDigit() }
-}
-
-fun String.convertStringToNumber(): String {
-
-    var  toto = this
-    while (conversionList.map { it.first }.any { toto.contains(it) }){
-        val firstOccurence = toto.findFirstOccurence().filter { it.third != -1 }.minBy { it.third }
-        toto = toto.replace(firstOccurence.first,firstOccurence.second)
-    }
-
-    return toto
-}
-
-fun String.findFirstOccurence() : List<Triple<String,String,Int>>{
+fun String.findFirstOccurence() : String{
     val r = mutableListOf<Triple<String,String,Int>>()
     for (pair in conversionList){
-        r.add(Triple(pair.first,pair.second, this.indexOf(pair.first)))
+        if (this.contains(pair.first)) r.add(Triple(pair.first,pair.second, this.indexOf(pair.first)))
     }
 
-    return r
+    val substring = if(r.isNotEmpty()) this.substring(0, r.minOf { it.third }) else this
+    return if (substring.getNumber().isEmpty())  r.minBy { it.third }.second else ""+this.getNumber()[0]
+}
+fun String.findLastOccurence() : String{
+    val r = mutableListOf<Triple<String,String,Int>>()
+    for (pair in conversionList){
+        if (this.contains(pair.first)) r.add(Triple(pair.first,pair.second, this.lastIndexOf(pair.first)))
+    }
+
+    val substring = if(r.isNotEmpty()) this.substring(r.maxOf { it.third }, this.length) else this
+    return if (substring.getNumber().isNotEmpty()) ""+this.getNumber().last() else r.maxBy { it.third }.second
+}
+
+fun String.getNumber(): String {
+    return this.filter { it.isDigit() }
 }
