@@ -35,3 +35,4 @@ bin/
 /.idea/vcs.xml
 /aoc2023.iml
 /.idea/kotlinc.xml
+/.idea/uiDesigner.xml
