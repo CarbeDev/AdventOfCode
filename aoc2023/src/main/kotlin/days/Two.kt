@@ -2,39 +2,30 @@ package days
 
 import java.io.File
 
-//2512
 fun main() {
     var gameId = 0
     var compteur = 0
-    File("src/main/resources/day2.txt").forEachLine { line ->
+    File("src/main/resources/day2.txt").forEachLine { game ->
         gameId++
-        if (line.parseLine().getSets().all { it.isSetValid() }) compteur+=gameId
-        println("$line  ${line.parseLine().getSets().all { it.isSetValid() }}")
+        if (game.splitIntoSets().all { set -> set.isSetValid() }) compteur += gameId
     }
 
     println(compteur)
 }
 
-fun String.parseLine() : String{
-        return this.substringAfter(":")
+fun String.splitIntoSets(): List<String> {
+    return this.substringAfter(":").split(";")
 }
 
-fun String.getSets() : List<String>{
-    return this.split(";")
-}
-
-fun String.isSetValid() : Boolean {
+fun String.isSetValid(): Boolean {
     val split = this.split(",")
-    return split.map {type ->
-            val toInt = type.filter { it.isDigit() }.toInt()
-        val number = Cubes.values().first { type.contains(it.label) }.number
-        val b = toInt <= number
-        b
-        }.all { it == true }
+    return split.map { type ->
+        type.filter { it.isDigit() }.toInt() <= Cubes.values().first { type.contains(it.label) }.number
+    }.all { it }
 }
 
-enum class Cubes(val label: String,val number : Int){
-    RED("red",12),
-    GREEN("green",13),
+enum class Cubes(val label: String, val number: Int) {
+    RED("red", 12),
+    GREEN("green", 13),
     BLUE("blue", 14)
 }
